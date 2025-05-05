@@ -1,16 +1,13 @@
 <?php
     session_start();
 
-    if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'admin') {
-        header("Location: ../../unauthorized.php");
+    if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'author') {
+        header("Location: ../unauthorized.php");
         exit;
     }
 
-    require_once '../../../models/Category.php';
-    require_once '../../../models/News.php';
-
-    $categoryModel = new Category();
-    $categories = $categoryModel->getAll();
+    require_once '../../models/Category.php';
+    require_once '../../models/News.php';
 ?>
 
 <!DOCTYPE html>
@@ -41,13 +38,14 @@
         
         $result = $newsModel->update($news_article['id'], $title, $content, $_SESSION['user_id'], $categoryId, $thumbnail_url, $is_featured);
 
+
         if ($result) {
             echo "<div class='alert alert-success'>News article altered successfully!</div>";
-            echo "<a href='news_list.php' class='btn btn-primary mt-2'>Go to News List</a>";
+            echo "<a href='author_dashboard.php' class='btn btn-primary mt-2'>Go to Author Dashboard</a>";
             exit;
         } else {
             echo "<div class='alert alert-danger'>Error editing news article.</div>";
-            echo "<a href='news_list.php' class='btn btn-primary mt-2'>Go to News List</a>";
+            echo "<a href='author_dashboard.php' class='btn btn-primary mt-2'>Go to Author Dashboard</a>";
         }
     }
 ?>
@@ -89,7 +87,7 @@
     </div>
 
     <button type="submit" class="btn btn-success">Edit News</button>
-    <a href="news_list.php" class="btn btn-secondary">Go Back</a>
+    <a href="author_dashboard.php" class="btn btn-secondary">Go Back</a>
 </form>
 
 </body>

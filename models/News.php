@@ -54,6 +54,66 @@ class News {
         return $news;
     }
 
+    public function getByCategory($category_id){
+        $sql = "SELECT news.*, categories.name AS category_name, users.name AS author_name 
+                FROM news
+                JOIN categories ON news.category_id = categories.id
+                JOIN users ON news.author_id = users.id
+                WHERE category_id = $category_id
+                ORDER BY news.created_at DESC";
+
+        $conn = Database::connect();
+        $result = $conn->query($sql);
+
+        $news = array();
+
+        while($row = $result->fetch_assoc()){
+            $news[] = $row;
+        }
+
+        return $news;
+    }
+
+    public function getByAuthor($author_id){
+        $sql = "SELECT news.*, categories.name AS category_name, users.name AS author_name 
+                FROM news
+                JOIN categories ON news.category_id = categories.id
+                JOIN users ON news.author_id = users.id
+                WHERE author_id = $author_id
+                ORDER BY news.created_at DESC";
+
+        $conn = Database::connect();
+        $result = $conn->query($sql);
+
+        $news = array();
+
+        while($row = $result->fetch_assoc()){
+            $news[] = $row;
+        }
+
+        return $news;
+    }
+
+    public function getNotApproved(){
+        $sql = "SELECT news.*, categories.name AS category_name, users.name AS author_name 
+                FROM news
+                JOIN categories ON news.category_id = categories.id
+                JOIN users ON news.author_id = users.id
+                WHERE status != 'approved'
+                ORDER BY news.created_at DESC";
+
+        $conn = Database::connect();
+        $result = $conn->query($sql);
+
+        $news = array();
+
+        while($row = $result->fetch_assoc()){
+            $news[] = $row;
+        }
+
+        return $news;
+    }
+
     public function create($data){
         $sql = "INSERT INTO news (title, content, category_id, author_id, thumbnail_url, views, is_featured)
                 VALUES (
@@ -88,8 +148,20 @@ class News {
         }
     }
 
-    public function update($id, $name, $email, $password, $bio){
-        $sql = "UPDATE users SET name = '$name', email = '$email', password = '$password', bio = '$bio' WHERE id = '$id'";
+    public function update($id, $title, $content, $author_id, $category_id, $thumbnail_url, $is_featured){
+        $sql = "UPDATE news SET title = '$title', content = '$content', author_id = '$author_id', category_id = '$category_id', thumbnail_url = '$thumbnail_url', is_featured = '$is_featured' WHERE id = '$id'";
+        $conn = Database::connect();
+        $result = $conn->query($sql);
+
+        if($result){
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    public function updateStatus($id, $status){
+        $sql = "UPDATE news SET status = '$status' WHERE id = '$id'";
         $conn = Database::connect();
         $result = $conn->query($sql);
 

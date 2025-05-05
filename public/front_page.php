@@ -14,7 +14,11 @@
 <body>
     <?php include './partials/nav.php'?>
     <?php 
-        require_once 'config/databaseConfig.php'
+        require_once 'models/News.php';
+
+        $newsModel = new News();
+        $news = $newsModel->getAll();
+        $news = array_slice($news, 0, 3);
 
     ?>
     <div class="container mt-4 pb-2 w-100">
@@ -23,7 +27,7 @@
                 <div class="main-news pb-5">
                     <img src="images/front-page-1.jpg" class="image-fluid h-100 w-100" alt="...">
                     <div class="text-white description ps-2 pt-5 pb-5">
-                        <span class="small">سياسة - فلسطين</span>
+                        <span class="small">سياسة</span>
                         <h5 class="fw-bold my-3">الغزي ورحلة معاناته اليومية.. خطة إسرائيلية للسيطرة على مساعدات القطاع</h5>
                         <a href="./details_page.php" class="text-decoration-none text-white">
                             <p class="small">قدم الجيش الإسرائيلي للأمم المتحدة ولمنظمات الإغاثة خطة لإدارة المساعدات التي تدخل إلى غزة وتتضمن فرض سيطرة إسرائيلية أكثر...</p>
